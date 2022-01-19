@@ -9,11 +9,12 @@ import "solidity-coverage";
 import "hardhat-abi-exporter";
 
 import { config as dotEnvConfig } from "dotenv";
+const { privateKey } = require("./secrets.json");
 
 dotEnvConfig();
 
 const mnemonic = process.env.WORKER_SEED || "";
-const privateKey = process.env.BIFROST_DEPLOY || "";
+//const privateKey = process.env.BIFROST_DEPLOY || "";
 const privateKey2 = process.env.RAINBOW_DEPLOY || "";
 
 const defaultConfig = {
@@ -35,14 +36,17 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://127.0.0.1:8545",
     },
-    mainnet: {
-      url: "https://speedy-nodes-nyc.moralis.io/50561c02c5a853febf23eb96/bsc/mainnet",
-      accounts: [privateKey, privateKey2]
-    },
     testnet: {
-      url: "https://speedy-nodes-nyc.moralis.io/50561c02c5a853febf23eb96/bsc/testnet",
-      accounts: [privateKey, privateKey2],
-      allowUnlimitedContractSize: true
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      chainId: 97,
+      gasPrice: 20000000000,
+      accounts: [privateKey],
+    },
+    mainnet: {
+      url: "https://bsc-dataseed.binance.org/",
+      chainId: 56,
+      gasPrice: 20000000000,
+      accounts: [privateKey],
     },
     hardhat: {
       forking: {
