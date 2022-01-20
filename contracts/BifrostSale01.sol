@@ -84,15 +84,6 @@ contract BifrostSale01 is Initializable, ContextUpgradeable {
     bool public launched; // Whether the sale has been finalized and launched; inited to false by default
     bool public canceled; // This sale is canceled
 
-    enum Status {
-        prepared,
-        launched,
-        canceled,
-        raised,
-        failed
-    }
-    event StatusChanged(address indexed sale, Status indexed status);
-
     /**
      * @notice Current Status - These are modified after a sale has been setup and is running
      */
@@ -304,7 +295,7 @@ contract BifrostSale01 is Initializable, ContextUpgradeable {
         require(!launched, "Sale has launched");
         end = block.timestamp;
         canceled = true;
-        emit StatusChanged(address(this), Status.canceled);
+        bifrostRouter.setStatus(IBifrostRouter01.Status.canceled);
     }
 
     /**
@@ -350,7 +341,7 @@ contract BifrostSale01 is Initializable, ContextUpgradeable {
         raised = raised.add(amount);
 
         if (!alreadyRaised && raised > softCap) {
-            emit StatusChanged(address(this), Status.raised);
+            bifrostRouter.setStatus(IBifrostRouter01.Status.raised);
             alreadyRaised = true;
         }
     }
@@ -452,7 +443,7 @@ contract BifrostSale01 is Initializable, ContextUpgradeable {
         }
 
         launched = true;
-        emit StatusChanged(address(this), Status.launched);
+        bifrostRouter.setStatus(IBifrostRouter01.Status.launched);
     }
 
     /**

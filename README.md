@@ -13,3 +13,5 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+
+npx hardhat run --network testnet scripts/deployBifrost.ts
